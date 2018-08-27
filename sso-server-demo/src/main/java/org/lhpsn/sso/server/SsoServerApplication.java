@@ -1,12 +1,12 @@
-package org.lhpsn.ssoserverdemo;
+package org.lhpsn.sso.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SsoServerDemoApplication {
+public class SsoServerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SsoServerDemoApplication.class, args);
+        SpringApplication.run(SsoServerApplication.class, args);
     }
 }

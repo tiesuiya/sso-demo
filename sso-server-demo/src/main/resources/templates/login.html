@@ -12,7 +12,7 @@
     <ul>
         <li>账号：<input name="userName" type="text"/></li>
         <li>密码：<input name="passWord" type="password"/></li>
-        <li><input type="submit" value="登录"/></li>
+        <li><input type="submit" value="登录"/><span style="color:red;margin:10px;" th:text="${error}"></span></li>
     </ul>
 </form>
 </body>
