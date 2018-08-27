@@ -1,0 +1,1 @@
+- 手动实现[CAS](https://apereo.github.io/cas/4.2.x/protocol/CAS-Protocol.html)协议
