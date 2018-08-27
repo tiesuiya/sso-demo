@@ -1,4 +1,4 @@
-package org.lhpsn.sso.server;
+package org.lhpsn.sso.server.bean;
 
 import lombok.Data;
 

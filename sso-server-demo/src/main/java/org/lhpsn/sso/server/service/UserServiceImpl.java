@@ -1,6 +1,6 @@
 package org.lhpsn.sso.server.service;
 
-import org.lhpsn.sso.server.User;
+import org.lhpsn.sso.server.bean.User;
 import org.springframework.stereotype.Service;
 
 /**

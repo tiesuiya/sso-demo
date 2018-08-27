@@ -1,7 +1,7 @@
 package org.lhpsn.sso.server.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.lhpsn.sso.server.User;
+import org.lhpsn.sso.server.bean.User;
 import org.lhpsn.sso.server.dao.TgtRedisDao;
 import org.lhpsn.sso.server.service.CasService;
 import org.lhpsn.sso.server.service.UserService;

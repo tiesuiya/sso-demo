@@ -1,6 +1,6 @@
 package org.lhpsn.sso.server.dao;
 
-import org.lhpsn.sso.server.User;
+import org.lhpsn.sso.server.bean.User;
 
 /**
  * TGT对象数据访问类
