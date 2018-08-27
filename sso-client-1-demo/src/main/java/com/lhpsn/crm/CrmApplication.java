@@ -2,6 +2,7 @@ package com.lhpsn.crm;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * 模拟crm
@@ -11,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Description
  */
 @SpringBootApplication
+@ComponentScan(basePackages = {"com.lhpsn.crm", "org.lhpsn.sso.client"})
 public class CrmApplication {
 
     public static void main(String[] args) {

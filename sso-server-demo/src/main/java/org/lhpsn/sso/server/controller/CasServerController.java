@@ -11,6 +11,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * cas服务端控制器
@@ -44,7 +46,7 @@ public class CasServerController {
     }
 
     @PostMapping("/cas/login")
-    public String login(String userName, String passWord, String service, ModelMap modelMap) {
+    public String login(String userName, String passWord, String service, ModelMap modelMap, RedirectAttributes redirectAttributes) {
         /*
          * username, password, and login ticket are POSTed in the body
          * 用户名，密码和登录ticket在POST的body中
@@ -72,8 +74,14 @@ public class CasServerController {
             // 生成ST
             String st = casService.generateST(tgc);
             // 重定向至客户端
-            modelMap.put("ticket", st);
+            redirectAttributes.addAttribute("ticket", st);
             return "redirect:" + service;
         }
+    }
+
+    @GetMapping("/serviceValidate")
+    @ResponseBody
+    public String serviceValidate(String ticket) {
+        return casService.validateST(ticket) ? "SUCCESS" : "FAIL";
     }
 }

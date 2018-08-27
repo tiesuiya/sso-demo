@@ -26,7 +26,7 @@ public final class CasServiceImpl extends DesUtils implements CasService {
 
     @Override
     public String generateTGC() {
-        String prefix = "TGC-";
+        String prefix = "TGC";
         return prefix + UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
     }
 
