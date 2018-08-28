@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.lhpsn</groupId>
-    <artifactId>sso-client-1-demo</artifactId>
+    <artifactId>sso-client-2-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>sso-client-1-demo</name>
+    <name>sso-client-2-demo</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>

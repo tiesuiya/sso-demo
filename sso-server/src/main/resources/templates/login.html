@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+<h1>SSO LOGIN PAGE</h1>
+
+<form method="post" action="/cas/login">
+    <input type="hidden" name="service" th:value="${service}">
+    <ul>
+        <li>账号：<input name="userName" type="text"/></li>
+        <li>密码：<input name="passWord" type="password"/></li>
+        <li><input type="submit" value="登录"/><span style="color:red;margin:10px;" th:text="${error}"></span></li>
+    </ul>
+</form>
+</body>
+</html>
