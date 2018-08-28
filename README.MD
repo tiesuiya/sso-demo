@@ -7,3 +7,6 @@
 127.0.0.1 www.crm.com
 127.0.0.1 www.erp.com
 ```
+
+## 已知BUG
+- 访问`http://www.crm.com:9001/data/page`，再访问`http://www.crm.com:9002/data/page`这样的话会陷入循环，无意间碰到的，现实中不应该可能出现

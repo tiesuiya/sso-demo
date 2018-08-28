@@ -1,4 +1,4 @@
-package com.lhpsn.erp;
+package com.lhpsn.crm;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @Description
  */
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.lhpsn.erp", "org.lhpsn.sso.client"})
+@ComponentScan(basePackages = {"com.lhpsn.crm", "org.lhpsn.sso.client"})
 public class CrmApplication {
 
     public static void main(String[] args) {

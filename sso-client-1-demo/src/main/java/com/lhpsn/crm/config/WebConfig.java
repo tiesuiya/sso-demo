@@ -1,4 +1,4 @@
-package com.lhpsn.erp.config;
+package com.lhpsn.crm.config;
 
 import org.lhpsn.sso.client.config.CasClientFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
