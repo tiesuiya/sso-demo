@@ -1,6 +1,0 @@
-server:
-  port: 9001
-logging:
-  level:
-    com.lhpsn.crm: DEBUG
-    org.lhpsn.sso.client: DEBUG

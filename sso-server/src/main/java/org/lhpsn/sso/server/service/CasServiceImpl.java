@@ -2,12 +2,12 @@ package org.lhpsn.sso.server.service;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.lhpsn.sso.common.CasConst;
+import org.lhpsn.sso.common.util.HttpUtils;
 import org.lhpsn.sso.server.bean.User;
 import org.lhpsn.sso.server.dao.ServiceUrlRedisDao;
 import org.lhpsn.sso.server.dao.TgtRedisDao;
-import org.lhpsn.sso.server.util.CasConfig;
 import org.lhpsn.sso.server.util.DesUtils;
-import org.lhpsn.sso.server.util.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -27,7 +27,7 @@ import java.util.UUID;
  */
 @Slf4j
 @Service
-public final class CasServiceImpl extends DesUtils implements CasService, CasConfig {
+public final class CasServiceImpl extends DesUtils implements CasService {
 
     @Autowired
     private TgtRedisDao tgtRedisDao;
@@ -66,7 +66,7 @@ public final class CasServiceImpl extends DesUtils implements CasService, CasCon
     @Override
     public void logout(String service, String tgc, HttpServletResponse response) {
         // 删除TGC
-        Cookie cookie = new Cookie(CASTGC_COOKIE_NAME, null);
+        Cookie cookie = new Cookie(CasConst.CASTGC_COOKIE_NAME, null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
@@ -77,7 +77,7 @@ public final class CasServiceImpl extends DesUtils implements CasService, CasCon
         // 删除session（客户端）
         for (String url : serviceUrlRedisDao.getAll()) {
             if (!StringUtils.isEmpty(url)) {
-                HttpUtils.sendGet(url + CLIENT_LOGOUT_PATH, "");
+                HttpUtils.sendGet(url + CasConst.CLIENT_LOGOUT_PATH, "");
             }
         }
     }

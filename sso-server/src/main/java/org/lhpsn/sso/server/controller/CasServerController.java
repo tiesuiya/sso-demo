@@ -1,6 +1,7 @@
 package org.lhpsn.sso.server.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.lhpsn.sso.common.CasConst;
 import org.lhpsn.sso.server.bean.User;
 import org.lhpsn.sso.server.dao.ServiceUrlRedisDao;
 import org.lhpsn.sso.server.dao.TgtRedisDao;
@@ -20,8 +21,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.lhpsn.sso.server.util.CasConfig.CASTGC_COOKIE_NAME;
 
 /**
  * cas服务端控制器
@@ -47,7 +46,7 @@ public class CasServerController {
     private CasService casService;
 
     @GetMapping("/cas/login")
-    public String login(String service, @CookieValue(value = CASTGC_COOKIE_NAME, required = false) String tgc, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+    public String login(String service, @CookieValue(value = CasConst.CASTGC_COOKIE_NAME, required = false) String tgc, ModelMap modelMap, RedirectAttributes redirectAttributes) {
         // service不能为空
         if (StringUtils.isEmpty(service)) {
             modelMap.put("message", "未指定服务地址");
@@ -104,7 +103,7 @@ public class CasServerController {
             // 生成ST
             String st = casService.generateST(tgc);
             // 设置TGC
-            Cookie cookie = new Cookie(CASTGC_COOKIE_NAME, tgc);
+            Cookie cookie = new Cookie(CasConst.CASTGC_COOKIE_NAME, tgc);
             cookie.setMaxAge(60 * 60);
             cookie.setPath("/");
             response.addCookie(cookie);
@@ -118,7 +117,7 @@ public class CasServerController {
 
 
     @GetMapping("/cas/logout")
-    public void logout(String service, @CookieValue(value = CASTGC_COOKIE_NAME, required = false) String tgc, HttpServletResponse response) {
+    public void logout(String service, @CookieValue(value = CasConst.CASTGC_COOKIE_NAME, required = false) String tgc, HttpServletResponse response) {
         casService.logout(service, tgc, response);
     }
 

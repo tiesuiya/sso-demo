@@ -1,6 +1,0 @@
-server:
-  port: 9002
-logging:
-  level:
-    com.lhpsn.erp: DEBUG
-    org.lhpsn.sso.client: DEBUG

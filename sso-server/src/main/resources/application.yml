@@ -1,3 +1,3 @@
 logging:
   level:
-    org.lhpsn.ssoserverdemo: DEBUG
+    org.lhpsn.sso.server: DEBUG
