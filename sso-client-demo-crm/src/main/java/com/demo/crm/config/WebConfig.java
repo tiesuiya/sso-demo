@@ -1,6 +1,7 @@
 package com.demo.crm.config;
 
-import org.lhpsn.sso.client.filter.CasClientFilter;
+import org.lhpsn.sso.client.filter.SsoLoginFilter;
+import org.lhpsn.sso.client.filter.SsoLogoutFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,11 +20,22 @@ import javax.servlet.Filter;
 public class WebConfig {
 
     @Bean
-    public FilterRegistrationBean casClientFilter() {
+    public FilterRegistrationBean ssoLoginFilter() {
         //创建过滤器注册bean
         FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<>();
 
-        registrationBean.setFilter(new CasClientFilter());
+        registrationBean.setFilter(new SsoLoginFilter());
+        registrationBean.addUrlPatterns("/*");
+        registrationBean.setDispatcherTypes(DispatcherType.REQUEST);
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean ssoLogoutFilter() {
+        // 创建过滤器注册bean
+        FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<>();
+
+        registrationBean.setFilter(new SsoLogoutFilter());
         registrationBean.addUrlPatterns("/*");
         registrationBean.setDispatcherTypes(DispatcherType.REQUEST);
         return registrationBean;

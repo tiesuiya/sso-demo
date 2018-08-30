@@ -18,7 +18,6 @@ public class UserServiceImpl implements UserService {
         if (userName.equals(passWord)) {
             User user = new User();
             user.setUserName(userName);
-            user.setPassWord(passWord);
             return user;
         }
         return null;

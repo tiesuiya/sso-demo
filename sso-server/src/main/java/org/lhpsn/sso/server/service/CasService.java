@@ -2,8 +2,6 @@ package org.lhpsn.sso.server.service;
 
 import org.lhpsn.sso.server.bean.User;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * Cas服务
  *
@@ -28,28 +26,11 @@ public interface CasService {
     String generateST(String tgc);
 
     /**
-     * 通过TGC获取用户
-     *
-     * @param tgc TGC
-     * @return 用户
-     */
-    User getUserByTGC(String tgc);
-
-    /**
-     * 通过ST获取用户 （也用于验证ST）
+     * 通过ST获取TGC
      *
      * @param st ST
-     * @return 用户
+     * @return TGC
      */
-    User getUserByST(String st);
-
-    /**
-     * cas单点登出
-     *
-     * @param service  登出客户端URL
-     * @param tgc      TGC
-     * @param response response
-     */
-    void logout(String service, String tgc, HttpServletResponse response);
+    String getTGCByST(String st);
 
 }

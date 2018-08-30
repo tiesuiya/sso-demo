@@ -1,5 +1,6 @@
 package org.lhpsn.sso.server.dao;
 
+import org.lhpsn.sso.server.bean.Tgt;
 import org.lhpsn.sso.server.bean.User;
 
 /**
@@ -11,20 +12,20 @@ import org.lhpsn.sso.server.bean.User;
  */
 public interface TgtRedisDao {
     /**
-     * 保存TGT对象
-     *
-     * @param tgc  key
-     * @param user value
-     */
-    void add(String tgc, User user);
-
-    /**
      * 获取用户对象
      *
      * @param tgc key
      * @return 保存的用户对象
      */
-    User getUser(String tgc);
+    Tgt getTgt(String tgc);
+
+    /**
+     * 保存TGT对象
+     *
+     * @param tgc  key
+     * @param user value
+     */
+    void save(String tgc, User user);
 
     /**
      * 删除TGT

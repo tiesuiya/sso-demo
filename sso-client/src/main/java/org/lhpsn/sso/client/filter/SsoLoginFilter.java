@@ -9,19 +9,20 @@ import org.springframework.util.StringUtils;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
 /**
- * CAS客户端过滤器
+ * SSO单点登录过滤器
  *
  * @Author: lihong
  * @Date: 2018/8/27
  * @Description
  */
 @Slf4j
-public class CasClientFilter implements Filter {
+public class SsoLoginFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -31,23 +32,42 @@ public class CasClientFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+        HttpSession session = request.getSession();
+        String requestURL = request.getRequestURL().toString();
         String requestURI = request.getRequestURI();
 
+        // 客户端发起统一登出请求
+        String serverLogoutPath = CasConst.SERVER_LOGOUT_PATH;
+        if (requestURI.contains(serverLogoutPath)) {
+            // 重定向服务端，进行统一登出
+            response.sendRedirect("http://www.sso.com:8080/" + serverLogoutPath);
+            return;
+        }
+
+        // 客户收到登出请求
+        if (requestURI.contains(CasConst.CLIENT_LOGOUT_PATH)) {
+            // 注销session
+            session.invalidate();
+            String message = "客户端注销成功，" + requestURL;
+            response.getWriter().print(message);
+            return;
+        }
+
         // 客户端收到ST验证请求
-        String stCheckRequestURI = "/";
-        String stCheckRequestParam = "ticket";
-        String ticket = request.getParameter(stCheckRequestParam);
-        if (stCheckRequestURI.equals(requestURI) && !StringUtils.isEmpty(ticket)) {
+        String ticket = request.getParameter(CasConst.SESSION_TICKET);
+        if (!StringUtils.isEmpty(ticket)) {
             /*
              * Protected app validates Service Ticket(ST) at CAS server over https
              * 受保护的应用程序通过https验证CAS服务器上的服务票证（ST）
              */
             log.info("CAS Protocol flow 5 客户端收到ST认证请求，进行认证");
-            StringBuffer requestService = request.getRequestURL();
-            String urlEncoderService = URLEncoder.encode(String.valueOf(requestService), "utf-8");
+            String urlEncoderService = URLEncoder.encode(requestURL, "utf-8");
             // 客户端发送请求时ticket也要进行URL编码，Spring MVC发送时不用编码，可能是因为它默认编码了
             String urlEncoderTicket = URLEncoder.encode(String.valueOf(ticket), "utf-8");
-            String param = "service=" + urlEncoderService + "&ticket=" + urlEncoderTicket;
+            String sessionId = request.getSession().getId();
+            String param = "service=" + urlEncoderService +
+                    "&ticket=" + urlEncoderTicket +
+                    "&sessionId=" + sessionId;
             String responseStr = HttpUtils.sendGet("http://www.sso.com:8080/serviceValidate", param);
 
             /*
@@ -65,11 +85,11 @@ public class CasClientFilter implements Filter {
             String successMessage = "success";
             if (successMessage.equals(success)) {
                 // 设置session
-                request.getSession().setAttribute("isLogin", true);
+                session.setAttribute("isLogin", true);
                 // 有效期30分钟
-                request.getSession().setMaxInactiveInterval(30 * 60);
-                request.getSession().setAttribute("userName", userName);
-                response.sendRedirect(String.valueOf(requestService));
+                session.setMaxInactiveInterval(30 * 60);
+                session.setAttribute("userName", userName);
+                response.sendRedirect(requestURL);
                 return;
             } else {
                 log.debug("客户端验证ST失败");
@@ -79,7 +99,7 @@ public class CasClientFilter implements Filter {
         }
 
         // 登录检查
-        Boolean isLogin = (Boolean) request.getSession().getAttribute(CasConst.LOGGED_SESSION_NAME);
+        Boolean isLogin = (Boolean) session.getAttribute(CasConst.LOGGED_SESSION);
         if (isLogin != null && isLogin) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
@@ -91,10 +111,9 @@ public class CasClientFilter implements Filter {
             StringBuffer requestService = request.getRequestURL();
             String urlEncoderService = URLEncoder.encode(String.valueOf(requestService), "utf-8");
             // TODO url管理
-            String redirectUrl = "http://www.sso.com:8080/cas/login?service=" + urlEncoderService;
+            String redirectUrl = "http://www.sso.com:8080/" + CasConst.SERVER_LOGIN_PATH + "?service=" + urlEncoderService;
             response.sendRedirect(redirectUrl);
         }
-
     }
 
     @Override

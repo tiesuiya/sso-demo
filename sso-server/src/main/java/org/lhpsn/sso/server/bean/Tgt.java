@@ -10,7 +10,7 @@ import lombok.Data;
  * @Description
  */
 @Data
-public class Tgc {
+public class Tgt {
 
     private String tgc;
     private User user;

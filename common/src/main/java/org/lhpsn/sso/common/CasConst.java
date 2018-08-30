@@ -9,12 +9,35 @@ package org.lhpsn.sso.common;
  */
 public class CasConst {
 
-    public static final String LOGGED_SESSION_NAME = "isLogin";
+    /**
+     * 登录session
+     */
+    public static final String LOGGED_SESSION = "isLogin";
 
     /**
-     * TGC cookie名称
+     * session ticket
      */
-    public static final String CASTGC_COOKIE_NAME = "CASTGC";
+    public static final String SESSION_TICKET = "ticket";
+
+    /**
+     * TGC cookie
+     */
+    public static final String CASTGC_COOKIE = "CASTGC";
+
+    /**
+     * 单点登录地址
+     */
+    public static final String SERVER_LOGIN_PATH = "/cas/login";
+
+    /**
+     * 单点登出地址
+     */
+    public static final String SERVER_LOGOUT_PATH = "/cas/logout";
+
+    /**
+     * ST验证地址
+     */
+    public static final String SERVER_ST_VALIDATE_PATH = "/serviceValidate";
 
     /**
      * 客户端登出地址

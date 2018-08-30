@@ -3,3 +3,4 @@ server:
 logging:
   level:
     com.demo.crm: DEBUG
+    org.lhpsn.sso.client: DEBUG

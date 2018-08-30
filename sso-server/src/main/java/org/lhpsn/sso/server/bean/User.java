@@ -2,6 +2,8 @@ package org.lhpsn.sso.server.bean;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 用户实体
  *
@@ -13,6 +15,6 @@ import lombok.Data;
 public class User {
 
     private String userName;
-    private String passWord;
     private String notes;
+    private List<RegisterInfo> registerInfoList;
 }
