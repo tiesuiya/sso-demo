@@ -1,6 +1,0 @@
-org\lhpsn\sso\common\dto\RoleDTO.class
-org\lhpsn\sso\common\dto\UserDTO.class
-org\lhpsn\sso\common\util\HttpUtils.class
-org\lhpsn\sso\common\util\DTOMockUtils.class
-org\lhpsn\sso\common\dto\PermissionDTO.class
-org\lhpsn\sso\common\CasConst.class
