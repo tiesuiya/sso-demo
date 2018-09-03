@@ -1,7 +1,5 @@
 package org.lhpsn.sso.server.service;
 
-import org.lhpsn.sso.server.bean.User;
-
 /**
  * Cas服务
  *

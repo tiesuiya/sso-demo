@@ -1,7 +1,7 @@
 package org.lhpsn.sso.server.service;
 
+import org.lhpsn.sso.common.dto.UserDTO;
 import org.lhpsn.sso.server.bean.Tgt;
-import org.lhpsn.sso.server.bean.User;
 
 /**
  * TGT服务
@@ -23,10 +23,10 @@ public interface TgtService {
     /**
      * 保存TGT
      *
-     * @param tgc  TGC
-     * @param user 用户
+     * @param tgc     TGC
+     * @param userDTO 用户
      */
-    void save(String tgc, User user);
+    void save(String tgc, UserDTO userDTO);
 
     /**
      * 删除TGT
@@ -35,12 +35,4 @@ public interface TgtService {
      */
     void remove(String tgc);
 
-    /**
-     * 注册登录信息
-     *
-     * @param tgc       TGC
-     * @param service   服务url
-     * @param sessionId sessionId
-     */
-    void registerLoginInfo(String tgc, String service, String sessionId);
 }

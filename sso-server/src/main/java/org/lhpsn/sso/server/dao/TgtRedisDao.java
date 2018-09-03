@@ -1,7 +1,7 @@
 package org.lhpsn.sso.server.dao;
 
+import org.lhpsn.sso.common.dto.UserDTO;
 import org.lhpsn.sso.server.bean.Tgt;
-import org.lhpsn.sso.server.bean.User;
 
 /**
  * TGT对象数据访问类
@@ -22,10 +22,10 @@ public interface TgtRedisDao {
     /**
      * 保存TGT对象
      *
-     * @param tgc  key
-     * @param user value
+     * @param tgc     key
+     * @param userDTO value
      */
-    void save(String tgc, User user);
+    void save(String tgc, UserDTO userDTO);
 
     /**
      * 删除TGT

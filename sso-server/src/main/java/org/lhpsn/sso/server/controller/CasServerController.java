@@ -2,10 +2,11 @@ package org.lhpsn.sso.server.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.lhpsn.sso.common.CasConst;
+import org.lhpsn.sso.common.dto.UserDTO;
 import org.lhpsn.sso.common.util.HttpUtils;
-import org.lhpsn.sso.server.bean.RegisterInfo;
+import org.lhpsn.sso.server.bean.LogonInfo;
 import org.lhpsn.sso.server.bean.Tgt;
-import org.lhpsn.sso.server.bean.User;
+import org.lhpsn.sso.server.dao.LogonInfoRedisDao;
 import org.lhpsn.sso.server.service.CasService;
 import org.lhpsn.sso.server.service.TgtService;
 import org.lhpsn.sso.server.service.UserService;
@@ -21,7 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +42,9 @@ public class CasServerController {
 
     @Autowired
     private CasService casService;
+
+    @Autowired
+    private LogonInfoRedisDao LogonInfoRedisDao;
 
     @Autowired
     private TgtService tgtService;
@@ -82,8 +85,8 @@ public class CasServerController {
          * 用户名，密码和登录ticket在POST的body中
          */
         log.info("CAS Protocol flow 3 服务端验证用户登录");
-        User user = userService.get(userName, passWord);
-        if (user == null || StringUtils.isEmpty(userName)) {
+        UserDTO userDTO = userService.get(userName, passWord);
+        if (userDTO == null || StringUtils.isEmpty(userName)) {
             modelMap.put("error", "用户名或密码错误！");
             modelMap.put("service", service);
             return "login";
@@ -100,7 +103,7 @@ public class CasServerController {
             // 生成TGC
             String tgc = casService.generateTGC();
             // 保存TGT
-            tgtService.save(tgc, user);
+            tgtService.save(tgc, userDTO);
             // 设置TGC
             Cookie cookie = new Cookie(CasConst.CASTGC_COOKIE, tgc);
             cookie.setMaxAge(60 * 60);
@@ -120,10 +123,10 @@ public class CasServerController {
         // 获取当前用户登录信息
         Tgt tgt = tgtService.get(tgc);
         if (tgt != null) {
-            List<RegisterInfo> registerInfo = tgt.getUser().getRegisterInfoList();
+            List<LogonInfo> registerInfo = LogonInfoRedisDao.getLogonInfoList(tgt.getUserDTO().getUserName());
             if (registerInfo != null && registerInfo.size() > 0) {
                 // 删除session（客户端）
-                for (RegisterInfo info : registerInfo) {
+                for (LogonInfo info : registerInfo) {
                     try {
                         HttpUtils.sendHttpRequest(info.getServiceUrl() + CasConst.CLIENT_LOGOUT_PATH, info.getSessionId());
                     } catch (Exception e) {
@@ -160,38 +163,13 @@ public class CasServerController {
         if (!StringUtils.isEmpty(tgc)) {
             Tgt tgt = tgtService.get(tgc);
             if (tgt != null) {
+                String userName = tgt.getUserDTO().getUserName();
                 responseBody.put("success", "success");
-                responseBody.put("userName", tgt.getUser().getUserName());
+                responseBody.put("userName", userName);
                 // 注册已登录服务
-                tgtService.registerLoginInfo(tgc, service, sessionId);
+                LogonInfoRedisDao.save(userName, service, sessionId);
             }
         }
         return responseBody;
-    }
-
-    public static void main(String[] args) {
-        Tgt tgt = new Tgt();
-        User user = new User();
-        List<RegisterInfo> registerInfos = new ArrayList<>();
-        RegisterInfo registerInfo = new RegisterInfo();
-        registerInfo.setServiceUrl("http://www.badi.com");
-        registerInfos.add(registerInfo);
-        user.setRegisterInfoList(registerInfos);
-        tgt.setUser(user);
-
-
-        List<RegisterInfo> registerInfoList = tgt.getUser().getRegisterInfoList();
-        if (registerInfoList == null) {
-            registerInfoList = new ArrayList<>();
-        }
-
-        RegisterInfo registerInfo1 = new RegisterInfo();
-        registerInfo1.setSessionId("555");
-        registerInfo1.setServiceUrl("666");
-
-        registerInfoList.add(registerInfo);
-
-        System.out.println(tgt);
-
     }
 }

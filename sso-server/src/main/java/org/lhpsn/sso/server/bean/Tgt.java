@@ -1,6 +1,7 @@
 package org.lhpsn.sso.server.bean;
 
 import lombok.Data;
+import org.lhpsn.sso.common.dto.UserDTO;
 
 /**
  * Tgt对象
@@ -13,5 +14,5 @@ import lombok.Data;
 public class Tgt {
 
     private String tgc;
-    private User user;
+    private UserDTO userDTO;
 }

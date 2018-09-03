@@ -10,7 +10,7 @@ import lombok.Data;
  * @Description
  */
 @Data
-public class RegisterInfo {
+public class LogonInfo {
 
     private String sessionId;
     private String serviceUrl;

@@ -1,6 +1,7 @@
 package org.lhpsn.sso.server.service;
 
-import org.lhpsn.sso.server.bean.User;
+import org.lhpsn.sso.common.dto.UserDTO;
+import org.lhpsn.sso.common.util.DTOMockUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,13 +14,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
     @Override
-    public User get(String userName, String passWord) {
+    public UserDTO get(String userName, String passWord) {
         // TODO 暂无数据库，伪代码构造一个用户对象
-        if (userName.equals(passWord)) {
-            User user = new User();
-            user.setUserName(userName);
-            return user;
-        }
-        return null;
+        return DTOMockUtils.getUserData(userName);
     }
 }

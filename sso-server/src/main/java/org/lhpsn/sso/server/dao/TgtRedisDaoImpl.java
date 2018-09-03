@@ -1,7 +1,7 @@
 package org.lhpsn.sso.server.dao;
 
+import org.lhpsn.sso.common.dto.UserDTO;
 import org.lhpsn.sso.server.bean.Tgt;
-import org.lhpsn.sso.server.bean.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -28,10 +28,10 @@ public class TgtRedisDaoImpl implements TgtRedisDao {
     }
 
     @Override
-    public void save(String tgc, User user) {
+    public void save(String tgc, UserDTO userDTO) {
         Tgt tgt = new Tgt();
         tgt.setTgc(tgc);
-        tgt.setUser(user);
+        tgt.setUserDTO(userDTO);
         TGT_CACHE.put(tgc, tgt);
     }
 

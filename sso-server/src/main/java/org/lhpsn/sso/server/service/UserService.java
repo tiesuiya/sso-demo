@@ -1,6 +1,6 @@
 package org.lhpsn.sso.server.service;
 
-import org.lhpsn.sso.server.bean.User;
+import org.lhpsn.sso.common.dto.UserDTO;
 
 /**
  * 用户service
@@ -17,5 +17,5 @@ public interface UserService {
      * @param passWord 密码
      * @return 用户
      */
-    User get(String userName, String passWord);
+    UserDTO get(String userName, String passWord);
 }

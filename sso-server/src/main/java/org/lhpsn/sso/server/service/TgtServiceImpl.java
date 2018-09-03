@@ -1,9 +1,9 @@
 package org.lhpsn.sso.server.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.lhpsn.sso.server.bean.RegisterInfo;
+import org.lhpsn.sso.common.dto.UserDTO;
+import org.lhpsn.sso.server.bean.LogonInfo;
 import org.lhpsn.sso.server.bean.Tgt;
-import org.lhpsn.sso.server.bean.User;
 import org.lhpsn.sso.server.dao.TgtRedisDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,8 +34,8 @@ public class TgtServiceImpl implements TgtService {
     }
 
     @Override
-    public void save(String tgc, User user) {
-        tgtRedisDao.save(tgc, user);
+    public void save(String tgc, UserDTO userDTO) {
+        tgtRedisDao.save(tgc, userDTO);
     }
 
     @Override
@@ -43,22 +43,5 @@ public class TgtServiceImpl implements TgtService {
         if (tgc != null) {
             tgtRedisDao.remove(tgc);
         }
-    }
-
-    @Override
-    public void registerLoginInfo(String tgc, String url, String sessionId) {
-        Tgt tgt = get(tgc);
-        List<RegisterInfo> registerInfoList = tgt.getUser().getRegisterInfoList();
-        if (registerInfoList == null) {
-            registerInfoList = new ArrayList<>();
-        }
-
-        RegisterInfo registerInfo = new RegisterInfo();
-        registerInfo.setSessionId(sessionId);
-        registerInfo.setServiceUrl(url);
-        registerInfoList.add(registerInfo);
-
-        tgt.getUser().setRegisterInfoList(registerInfoList);
-        log.debug("注册登录信息成功，{}",tgt);
     }
 }
