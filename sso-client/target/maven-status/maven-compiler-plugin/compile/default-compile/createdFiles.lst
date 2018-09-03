@@ -1,0 +1,2 @@
+org\lhpsn\sso\client\filter\SsoLogoutFilter.class
+org\lhpsn\sso\client\filter\SsoLoginFilter.class
