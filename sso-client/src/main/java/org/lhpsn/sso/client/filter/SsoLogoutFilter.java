@@ -1,8 +1,6 @@
 package org.lhpsn.sso.client.filter;
 
 import lombok.extern.slf4j.Slf4j;
-import org.lhpsn.sso.common.CasConst;
-import org.springframework.core.annotation.Order;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
