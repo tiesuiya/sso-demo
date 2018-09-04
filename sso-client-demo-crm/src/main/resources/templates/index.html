@@ -6,7 +6,13 @@
 </head>
 <body>
 <!-- 从session中获取用户信息 -->
-<h1 style="color:hotpink">Welcome to CRM, <span th:text="${session.userName}"></span>!</h1>
+<h1 style="color:hotpink">Welcome to CRM, <span th:text="${session.logonUser.userName}"></span>!</h1>
 <a href="/cas/logout">退出登录</a>
+<ul>
+    <li><a href="/addOrder">添加订单</a></li>
+    <li><a href="/delOrder">删除订单</a></li>
+    <li><a href="/transfer">转账</a></li>
+    <li><a href="/withdrawal">提款</a></li>
+</ul>
 </body>
 </html>

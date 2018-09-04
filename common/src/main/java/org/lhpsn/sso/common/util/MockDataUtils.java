@@ -15,8 +15,8 @@ import java.util.Map;
  * @Date: 2018/9/3
  * @Description
  */
-public final class DTOMockUtils {
-    private DTOMockUtils() {
+public final class MockDataUtils {
+    private MockDataUtils() {
     }
 
     private static final Map<String, UserDTO> MOCK_USER_LIST = new HashMap<>();

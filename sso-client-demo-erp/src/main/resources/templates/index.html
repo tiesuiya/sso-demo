@@ -6,7 +6,7 @@
 </head>
 <body>
 <!-- 从session中获取用户信息 -->
-<h1 style="color:royalblue">Welcome to ERP, <span th:text="${session.userName}"></span>!</h1>
+<h1 style="color:royalblue">Welcome to ERP, <span th:text="${session.logonUser}"></span>!</h1>
 <a href="/cas/logout">退出登录</a>
 </body>
 </html>

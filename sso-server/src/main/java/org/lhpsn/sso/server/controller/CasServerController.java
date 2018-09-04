@@ -3,6 +3,7 @@ package org.lhpsn.sso.server.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.lhpsn.sso.common.CasConst;
 import org.lhpsn.sso.common.dto.UserDTO;
+import org.lhpsn.sso.common.dto.ValidateDTO;
 import org.lhpsn.sso.common.util.HttpUtils;
 import org.lhpsn.sso.server.bean.LogonInfo;
 import org.lhpsn.sso.server.bean.Tgt;
@@ -22,9 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * cas服务端控制器
@@ -149,27 +148,27 @@ public class CasServerController {
 
     @GetMapping(CasConst.SERVER_ST_VALIDATE_PATH)
     @ResponseBody
-    public Map<String, String> serviceValidate(String ticket, String service, String sessionId) {
+    public ValidateDTO serviceValidate(String ticket, String service, String sessionId) {
         /*
          * CAS returns an XML document which includes and indication of success, the authenticated subject, and optionally attributes
          * CAS返回一个XML(当然我认为JSON也行)文档，其中包括成功消息，经过身份验证的主体和可选的属性
          */
         log.info("CAS Protocol flow 6 服务端验证ST，返回消息和用户对象");
 
-        Map<String, String> responseBody = new HashMap<>();
-        responseBody.put("success", "fail");
+        ValidateDTO validateDTO = new ValidateDTO();
+        validateDTO.setSuccess(false);
 
         String tgc = casService.getTGCByST(ticket);
         if (!StringUtils.isEmpty(tgc)) {
             Tgt tgt = tgtService.get(tgc);
             if (tgt != null) {
-                String userName = tgt.getUserDTO().getUserName();
-                responseBody.put("success", "success");
-                responseBody.put("userName", userName);
+                UserDTO userDTO = tgt.getUserDTO();
+                validateDTO.setSuccess(true);
+                validateDTO.setUserDTO(userDTO);
                 // 注册已登录服务
-                LogonInfoRedisDao.save(userName, service, sessionId);
+                LogonInfoRedisDao.save(userDTO.getUserName(), service, sessionId);
             }
         }
-        return responseBody;
+        return validateDTO;
     }
 }

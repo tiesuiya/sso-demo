@@ -17,7 +17,7 @@ import javax.servlet.Filter;
  * @Description FIXME 客户端配置2（配置过滤器）
  */
 @Configuration
-public class WebConfig {
+public class SsoClientConfig {
 
     @Bean
     public FilterRegistrationBean ssoLoginFilter() {

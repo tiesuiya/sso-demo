@@ -3,6 +3,8 @@ package org.lhpsn.sso.client.filter;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.lhpsn.sso.common.CasConst;
+import org.lhpsn.sso.common.dto.UserDTO;
+import org.lhpsn.sso.common.dto.ValidateDTO;
 import org.lhpsn.sso.common.util.HttpUtils;
 import org.springframework.util.StringUtils;
 
@@ -12,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.HashMap;
 
 /**
  * SSO单点登录过滤器
@@ -68,7 +69,7 @@ public class SsoLoginFilter implements Filter {
             String param = "service=" + urlEncoderService +
                     "&ticket=" + urlEncoderTicket +
                     "&sessionId=" + sessionId;
-            String responseStr = HttpUtils.sendGet("http://www.sso.com:8080/serviceValidate", param);
+            String responseStr = HttpUtils.sendGet("http://www.sso.com:8080/" + CasConst.SERVER_ST_VALIDATE_PATH, param);
 
             /*
              * Set the session cookie and forward the browser back to the application with the service ticket stripped off
@@ -78,17 +79,16 @@ public class SsoLoginFilter implements Filter {
              */
             log.info("CAS Protocol flow 7 客户端收到ST认证相应，进行处理");
             Gson gson = new Gson();
-            HashMap map = gson.fromJson(responseStr, HashMap.class);
-            String success = (String) map.get("success");
-            String userName = (String) map.get("userName");
+            ValidateDTO validateDTO = gson.fromJson(responseStr, ValidateDTO.class);
+            Boolean success = validateDTO.getSuccess();
+            UserDTO userDTO = validateDTO.getUserDTO();
             // 定义成功消息
-            String successMessage = "success";
-            if (successMessage.equals(success)) {
+            if (success) {
                 // 设置session
                 session.setAttribute("isLogin", true);
                 // 有效期30分钟
                 session.setMaxInactiveInterval(30 * 60);
-                session.setAttribute("userName", userName);
+                session.setAttribute("logonUser", userDTO);
                 response.sendRedirect(requestURL);
                 return;
             } else {
