@@ -91,11 +91,9 @@ public class CasServerController {
             return "login";
         } else {
             /*
-             * User is authenticated so create single-signon (SSO) session
-             * CASTGC cookie contains the Ticket Granting Ticket (TGT)
+             * User is authenticated so create Single-signon (SSO) session CASTGC cookie contains the Ticket Granting Ticket (TGT)
              * The TGT is the session key for the users SSO session
-             * 用户已通过身份验证，因此创建单点登录（SSO）会话
-             * CASTGC cookie包含票证授予票证（TGT）
+             * 用户已通过身份验证，因此创建单点登录（SSO）会话CASTGC cookie包含票证授予票证（TGT）
              * TGT是用户SSO会话的会话密钥
              */
             log.info("CAS Protocol flow 4 服务端登录成功，生成一系列CAS验证对象");
@@ -166,7 +164,7 @@ public class CasServerController {
                 validateDTO.setSuccess(true);
                 validateDTO.setUserDTO(userDTO);
                 // 注册已登录服务
-                LogonInfoRedisDao.save(userDTO.getUserName(), service, sessionId);
+                LogonInfoRedisDao.save(userDTO.getUserName(), sessionId, service);
             }
         }
         return validateDTO;
